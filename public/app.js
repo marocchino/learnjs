@@ -13,11 +13,11 @@ learnjs.problems = [
   }
 ]
 
-learnjs.template = function(name) {
+learnjs.template = (name) => {
   return $('.templates .' + name).clone()
 }
 
-learnjs.landingView = function() {
+learnjs.landingView = () => {
   return learnjs.template('landing-view')
 }
 
@@ -27,22 +27,26 @@ learnjs.applyObject = (obj, elem) => {
   }
 }
 
+learnjs.triggerEvent = (name, args) => {
+  $('.view-container>*').trigger(name, args)
+}
+
 learnjs.flashElement = (elem, content) => {
   elem.fadeOut('fast', () => {
     elem.html(content).fadeIn()
   })
 }
 
-learnjs.buildCorrectFlash = function (problemNum) {
-  let correctFlash = learnjs.template('correct-flash');
-  let link = correctFlash.find('a');
+learnjs.buildCorrectFlash = (problemNum) => {
+  let correctFlash = learnjs.template('correct-flash')
+  let link = correctFlash.find('a')
   if (problemNum < learnjs.problems.length) {
-    link.attr('href', '#problem-' + (problemNum + 1));
+    link.attr('href', '#problem-' + (problemNum + 1))
   } else {
-    link.attr('href', '');
-    link.text("You're Finished!");
+    link.attr('href', '')
+    link.text("You're Finished!")
   }
-  return correctFlash;
+  return correctFlash
 }
 
 learnjs.problemView = (data) => {
@@ -67,6 +71,15 @@ learnjs.problemView = (data) => {
     return false
   }
 
+  if (problemNumber < learnjs.problems.length) {
+    var buttonItem = learnjs.template('skip-btn')
+    buttonItem.find('a').attr('href', '#problem-' + (problemNumber + 1))
+    $('.nav-list').append(buttonItem)
+    view.bind('removingView', function() {
+      buttonItem.remove()
+    })
+  }
+
   view.find('.check-btn').click(checkAnswerClick)
   view.find('.title').text(`Problem #${problemNumber}`)
   learnjs.applyObject(learnjs.problems[problemNumber - 1], view)
@@ -76,11 +89,13 @@ learnjs.problemView = (data) => {
 learnjs.showView = (hash) => {
   let routes = {
     '#problem': learnjs.problemView,
+    '#': learnjs.landingView,
     '': learnjs.landingView
   }
   let [route, id] = hash.split('-')
   let viewFn = routes[route]
   if (viewFn) {
+    learnjs.triggerEvent('removingView', [])
     $('.view-container').empty().append(viewFn(id))
   }
 }
