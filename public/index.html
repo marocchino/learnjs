@@ -45,6 +45,9 @@
         font-size: 32px;
       }
     </style>
+    <meta name="google-signin-client_id"
+          content="837412118811-kfn35tm6n3smjg120ikskntt0v22l25r.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
   <body>
     <div class='markup'>
@@ -53,10 +56,18 @@
           <li><a class='text-lg' href="#">LearnJS</a></li>
           <li><a href="#problem-1">Start</a></li>
         </ul>
+        <div class='four columns signin-bar'>
+          <span class='navbar-padding u-pull-right'>
+            <span class="g-signin2" data-onsuccess="googleSignIn"></span>
+          </span>
+        </div>
       </div>
       <div class='view-container container'>
       </div>
       <div class='templates'>
+        <div class='profile-link navbar-padding-lg'>
+          <a href="#profile"></a>
+        </div>
         <div class='landing-view'>
           <div class='row'>
             <div class='one-half column'>
@@ -68,8 +79,10 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class='templates'>
+        <div class='profile-view'>
+          <h3>Your Profile</h3>
+          <div class='email'></div>
+        </div>
         <div class='problem-view'>
           <h3 class='title'></h3>
           <p data-name='description'></p>
